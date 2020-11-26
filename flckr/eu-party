@@ -1,0 +1,293 @@
+#!/bin/bash
+
+set -e
+
+APP="eu-party"
+TARGET="HEAD"
+
+print_help() {
+  cat <<-EOF
+  Usage: ${APP} [-f|-t|-s|--release|--hotfix] [NAME]    - creates feature/task branch or updates version tag
+
+  -f, --feature           creates a new feature environment (feature branch, initial tag and push feature if necessary)
+  -t, --task              creates a task branch based on the current feature branch
+  -s, --subtask           creates a sub-task branch based on the current task branch
+  --hotfix                creates a new branch for specified hotfix version
+  --hotfix-finish         executes `git-flow hotfix finish` for specified hotfix version
+  --release               creates a new branch for specified release version
+  --release-finish        executes `git-flow release finish` for specified release version
+  -h, --help              display this help and exit
+
+  execution of the script without parameters prints last commit statistics (hash, revision, branch name and tag name).
+
+EOF
+}
+
+warn() {
+  echo "$@" >&2
+}
+
+log() {
+  if [ -n "$VERBOSE" ]; then
+    # log messages to error stream because most of the functions return values via STDOUT stream
+    # and the log messages will become a result that may lead to incorrect behavior in verbose mode
+    warn "$@"
+  fi
+}
+
+fail() {
+  warn "$@"
+  exit 1
+}
+
+current_branch() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+read_build_info() {
+  local branch=`gitversion /showvariable BranchName`
+  local revision=`gitversion /showvariable FullSemVer`
+  local hsh=`gitversion /showvariable Sha`
+
+  echo
+  echo -e "Branch:       ${branch}"
+  echo -e "Revision:     ${revision}"
+  echo -e "Hash:         ${hsh}"
+  echo
+}
+
+validate_name() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    fail "$2 must have a non-empty name"
+  fi
+
+  if [[ "$name" =~ [^a-zA-Z0-9_-] ]]; then
+    fail "$2 name can contain only alphanumeric symbols, underscore and hyphen"
+  fi
+}
+
+validate_version() {
+  local name="$1"
+  if [ -z "$name" ]; then
+    fail "Version name must not be empty"
+  fi
+
+  if ! [[ "$name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    fail "Version must have format 'X.Y.Z' where X, Y and Z are integers"
+  fi
+}
+
+start_release() {
+  local tag="$NAME"
+  if [ -z "$tag" ]; then
+    echo
+    read -e -p "Enter a Release version: " tag
+    echo
+  fi
+
+  validate_version "$tag"
+
+  git-flow release start $tag
+  git-flow release publish
+}
+
+finish_release() {
+  local tag="$NAME"
+  if [ -z "$tag" ]; then
+    echo
+    read -e -p "Enter a Release version: " tag
+    echo
+  fi
+
+  validate_version "$tag"
+
+  git-flow release finish $tag
+}
+
+start_hotfix() {
+  local tag="$NAME"
+  if [ -z "$tag" ]; then
+    echo
+    read -e -p "Enter a Hotfix version: " tag
+    echo
+  fi
+
+  validate_version "$tag"
+
+  git-flow hotfix start $tag
+  git-flow hotfix publish
+}
+
+finish_hotfix() {
+  local tag="$NAME"
+  if [ -z "$tag" ]; then
+    echo
+    read -e -p "Enter a Hotfix version: " tag
+    echo
+  fi
+
+  validate_version "$tag"
+
+  git-flow hotfix finish $tag
+}
+
+start_feature() {
+  local tag="$NAME"
+  if [ -z "$tag" ]; then
+    echo 
+    read -e -p "Enter a Feature name: " tag
+    echo
+  fi
+
+  validate_name "$tag" "Feature"
+
+  git-flow feature start $tag
+
+  local need_push
+  echo
+  printf "Feature '$tag' is created. Would you like to publish it? (Y/n) "
+  while [ -z "$need_push" ] || ! [[ "$need_push" =~ ^[YNyn]|yes|Yes|no|No$ ]]; do
+    read need_push
+    echo
+    if [ -n "$need_push" ] && [[ "$need_push" =~ ^[Yy]|yes|Yes$ ]]; then
+      echo "Publishing '$tag' to upstream..."
+      git-flow feature publish
+    elif [ -n "$need_push" ] && [[ "$need_push" =~ ^[Nn]|no|No$ ]]; then
+      echo "Feature '$tag' is created. Don't forget to publish it to upstream"
+    else
+      echo "Invalid input. You may only type 'yes' or 'no'"
+      printf "Would you like to publish feature '$tag'? (Y/n) "
+    fi
+  done
+}
+
+start_subtask() {
+  local branch=$(current_branch)
+  if [[ "$branch" =~ ^feature/([^_]+_?)+__([^_]+_?)+$ ]]; then
+    local subtask_name="$NAME"
+    if [ -z "$subtask_name" ]; then
+      echo
+      read -e -p "Enter a Sub-task name: " subtask_name
+      echo
+    fi
+
+    validate_name "$subtask_name" "Sub-task"
+
+    local subtask_branch="${branch}__${subtask_name}"
+    git checkout --no-track -b "$subtask_branch"
+
+    local need_push
+    echo
+    printf "Sub-task '$subtask_name' is created. Would you like to publish it? (Y/n) "
+    while [ -z "$need_push" ] || ! [[ "$need_push" =~ ^[YNyn]|yes|Yes|no|No$ ]]; do
+      read need_push
+      echo
+      if [ -n "$need_push" ] && [[ "$need_push" =~ ^[Yy]|yes|Yes$ ]]; then
+        echo "Publishing '$subtask_name' to upstream..."
+        git push --set-upstream origin "$subtask_branch"
+      elif [ -n "$need_push" ] && [[ "$need_push" =~ ^[Nn]|no|No$ ]]; then
+        echo "Sub-task '$subtask_name' is created. Don't forget to publish it to upstream"
+      else
+        echo "Invalid input. You may only type 'yes' or 'no'"
+        printf "Would you like to publish task '$subtask_name'? (Y/n) "
+      fi
+    done
+  else
+    echo
+    fail "Sub-task can be started only from the 'feature/' branch that is a task itself"
+  fi
+}
+
+start_task() {
+  local branch=$(current_branch)
+  if [[ "$branch" =~ ^feature/([^_]+_?)+$ ]]; then
+    local task_name="$NAME"
+    if [ -z "$task_name" ]; then
+      echo
+      read -e -p "Enter a Task name: " task_name
+      echo
+    fi
+
+    validate_name "$task_name" "Task"
+
+    local task_branch="${branch}__${task_name}"
+    git checkout --no-track -b "$task_branch"
+
+    local need_push
+    echo
+    printf "Task '$task_name' is created. Would you like to publish it? (Y/n) "
+    while [ -z "$need_push" ] || ! [[ "$need_push" =~ ^[YNyn]|yes|Yes|no|No$ ]]; do
+      read need_push
+      echo
+      if [ -n "$need_push" ] && [[ "$need_push" =~ ^[Yy]|yes|Yes$ ]]; then
+        echo "Publishing '$task_name' to upstream..."
+        git push --set-upstream origin "$task_branch"
+      elif [ -n "$need_push" ] && [[ "$need_push" =~ ^[Nn]|no|No$ ]]; then
+        echo "Task '$task_name' is created. Don't forget to publish it to upstream"
+      else
+        echo "Invalid input. You may only type 'yes' or 'no'"
+        printf "Would you like to publish task '$task_name'? (Y/n) "
+      fi
+    done
+  else
+    echo
+    fail "Task can be started only from the 'feature/' branch that is not a task itself"
+  fi
+}
+
+while [ -n "$1" ]; do
+  case $1 in
+    -h|--help|-\?)
+      print_help
+      exit 0
+      ;;
+    -f|--feature)
+      START_FEATURE=1
+      ;;
+    -t|--task)
+      START_TASK=1
+      ;;
+    -s|--subtask)
+      START_SUBTASK=1
+      ;;
+    --release)
+      START_RELEASE=1
+      ;;
+    --release-finish)
+      FINISH_RELEASE=1
+      ;;
+    --hotfix)
+      START_HOTFIX=1
+      ;;
+    --hotfix-finish)
+      FINISH_HOTFIX=1
+      ;;
+    *)
+    NAME="$1"
+      ;;
+  esac
+  shift
+done
+
+if [ -n "$UP_VERSION" ]; then
+  create_master_version_tag
+elif [ -n "$UP_DEV_VERSION" ]; then
+  create_dev_version_tag
+elif [ -n "$START_FEATURE" ]; then
+  start_feature
+elif [ -n "$START_TASK" ]; then
+  start_task
+elif [ -n "$START_SUBTASK" ]; then
+  start_subtask
+elif [ -n "$START_RELEASE" ]; then
+  start_release
+elif [ -n "$FINISH_RELEASE" ]; then
+  finish_release
+elif [ -n "$START_HOTFIX" ]; then
+  start_hotfix
+elif [ -n "$FINISH_HOTFIX" ]; then
+  finish_hotfix
+else
+  read_build_info
+fi
