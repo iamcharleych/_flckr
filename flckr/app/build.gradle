@@ -75,6 +75,11 @@ dependencies {
     implementation Deps.daggerAssist
     kapt Deps.daggerAssistProcessor
 
+    implementation Deps.paging
+    implementation Deps.room
+    implementation Deps.roomKtx
+    kapt Deps.roomCompiler
+
     // square up
     implementation Deps.retrofit
     implementation Deps.retrofitGson

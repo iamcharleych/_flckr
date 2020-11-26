@@ -1,14 +1,14 @@
-package com.ic.flckr.gallery.domain
+package com.ic.flckr.feature.gallery.domain
 
 import com.ic.flckr.common.domain.Result
-import com.ic.flckr.gallery.domain.model.Photo
+import com.ic.flckr.feature.gallery.domain.model.Photo
 import javax.inject.Inject
 
 class SearchUseCase @Inject constructor(
     private val repository: PhotoRepository
 ) {
     suspend operator fun invoke(
-        searchQuery: String,
+        searchQuery: String?,
         pageIndex: Int,
         appendResults: Boolean
     ): Result<List<Photo>> {

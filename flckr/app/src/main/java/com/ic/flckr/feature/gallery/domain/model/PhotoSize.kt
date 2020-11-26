@@ -1,4 +1,4 @@
-package com.ic.flckr.gallery.domain.model
+package com.ic.flckr.feature.gallery.domain.model
 
 enum class PhotoSize(val value: String) {
     SMALL("s"),
