@@ -1,0 +1,62 @@
+object Versions {
+    // BEWARE: A change in buildSrc causes the whole project to become out-of-date
+    // Ref: https://proandroiddev.com/stop-using-gradle-buildsrc-use-composite-builds-instead-3c38ac7a2ab3
+    const val minSdk = 21
+    const val targetSdk = 29
+    const val compileSdk = 29
+
+    const val dagger = "2.28.3"
+    const val daggerAssist = "0.6.0"
+    const val glide = "4.11.0"
+    const val junit = "4.13"
+    const val kotlin = "1.4.0"
+    const val kotlinCoroutines = "1.3.9"
+    const val kotlinSerialization = "1.0.0-RC"
+    const val okhttp = "4.8.1"
+    const val retrofit = "2.9.0"
+    const val threetenabp = "1.2.4"
+    const val timber = "4.7.1"
+    const val xAppCompat = "1.2.0"
+    const val xConstraintLayout = "2.0.1"
+    const val xCoreKtx = "1.3.1"
+    const val xFragmentKtx = "1.3.0-beta01"
+    const val xLifecycle = "2.2.0"
+    const val xMaterial = "1.2.1"
+    const val xRecyclerView = "1.1.0"
+    const val xWorker = "2.4.0"
+}
+
+object Deps {
+    const val daggerAndroid             = "com.google.dagger:dagger-android:${Versions.dagger}"
+    const val daggerAndroidSupport      = "com.google.dagger:dagger-android-support:${Versions.dagger}"
+    const val daggerAndroidSupportCompiler  = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+    const val daggerAssist              = "com.squareup.inject:assisted-inject-annotations-dagger2:${Versions.daggerAssist}"
+    const val daggerAssistProcessor     = "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.daggerAssist}"
+    const val daggerCompiler            = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    const val daggerRuntime             = "com.google.dagger:dagger:${Versions.dagger}"
+    const val glide                     = "com.github.bumptech.glide:glide:${Versions.glide}"
+    const val kotlinCoroutines          = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
+    const val kotlinCoroutinesAndroid   = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
+    const val kotlinPlugin              = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val kotlinSerializationCore   = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.kotlinSerialization}"
+    const val kotlinSerializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+    const val kotlinStdlib              = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    const val okhttp                    = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
+    const val okhttpLoggingInterceptor  = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
+    const val retrofit                  = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    const val retrofitGson              = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+    const val testJUnit                 = "junit:junit:${Versions.junit}"
+    const val threetenabp               = "com.jakewharton.threetenabp:threetenabp:${Versions.threetenabp}"
+    const val timber                    = "com.jakewharton.timber:timber:${Versions.timber}"
+    const val xAppCompat                = "androidx.appcompat:appcompat:${Versions.xAppCompat}"
+    const val xConstraintLayout         = "androidx.constraintlayout:constraintlayout:${Versions.xConstraintLayout}"
+    const val xCore                     = "androidx.core:core-ktx:${Versions.xCoreKtx}"
+    const val xFragment                 = "androidx.fragment:fragment-ktx:${Versions.xFragmentKtx}"
+    const val xLifecycleCommonJava8     = "androidx.lifecycle:lifecycle-common-java8:${Versions.xLifecycle}"
+    const val xLifecycleLiveData        = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.xLifecycle}"
+    const val xLifecycleProcess         = "androidx.lifecycle:lifecycle-process:${Versions.xLifecycle}"
+    const val xLifecycleViewModel       = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.xLifecycle}"
+    const val xMaterial                 = "com.google.android.material:material:${Versions.xMaterial}"
+    const val xRecyclerView             = "androidx.recyclerview:recyclerview:${Versions.xRecyclerView}"
+    const val xWorker                   = "androidx.work:work-runtime-ktx:${Versions.xWorker}"
+}

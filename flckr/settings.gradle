@@ -1,2 +1,4 @@
 include ':app'
+include ':logger'
+
 rootProject.name = "flckr"

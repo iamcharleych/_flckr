@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion Versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        buildConfigField("boolean", "SUPPORT", "false")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        support {
+            initWith release
+            buildConfigField("boolean", "SUPPORT", "true")
+        }
+    }
+
+}
+
+dependencies {
+    implementation Deps.kotlinCoroutinesAndroid
+    implementation Deps.timber
+    implementation Deps.xFragment
+    implementation Deps.xLifecycleProcess
+}
