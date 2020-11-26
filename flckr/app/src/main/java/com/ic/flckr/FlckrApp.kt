@@ -2,14 +2,25 @@ package com.ic.flckr
 
 import android.app.Application
 import android.os.Build
+import com.ic.flckr.common.di.DaggerAppComponent
 import com.ic.logger.Logger
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 
-class FlckrApp : Application() {
+class FlckrApp : Application(), HasAndroidInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
     override fun onCreate() {
         super.onCreate()
 
         setupLogger()
+        setupDagger()
     }
 
     private fun setupLogger() {
@@ -38,6 +49,13 @@ class FlckrApp : Application() {
                 ${resources.displayMetrics}
             """.trimIndent() }
         }
+    }
+
+    private fun setupDagger() {
+        DaggerAppComponent.builder()
+            .application(this)
+            .build()
+            .inject(this)
     }
 
     companion object {

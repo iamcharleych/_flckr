@@ -1,4 +1,4 @@
-package com.ic.flckr.network.core
+package com.ic.flckr.common.data.network.core
 
 data class DataResponse<T>(
     @Transient

@@ -1,6 +1,4 @@
-package com.ic.flckr.network.core
-
-import com.ic.data.network.core.DataRequest
+package com.ic.flckr.common.data.network.core
 
 abstract class RestClient<RESPONSE> {
     abstract suspend fun execute(request: DataRequest): RESPONSE

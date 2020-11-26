@@ -1,4 +1,4 @@
-package com.ic.flckr.feature.gallery.data.db
+package com.ic.flckr.common.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

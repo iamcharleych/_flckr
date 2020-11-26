@@ -1,7 +1,7 @@
 package com.ic.flckr.feature.gallery.data
 
 import androidx.room.withTransaction
-import com.ic.flckr.feature.gallery.data.db.FlckrDatabase
+import com.ic.flckr.common.data.db.FlckrDatabase
 import com.ic.flckr.feature.gallery.data.entity.FlckrPhotoEntity
 import javax.inject.Inject
 

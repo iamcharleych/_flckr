@@ -1,4 +1,4 @@
-package com.ic.flckr.di.module
+package com.ic.flckr.common.di.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -54,10 +54,4 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideRestClient(retrofit: Retrofit): RestClient<DataResponse<*>> {
-//        return RetrofitRestClient(retrofit)
-//    }
 }

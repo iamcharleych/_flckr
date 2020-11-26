@@ -1,4 +1,4 @@
-package com.ic.flckr.di.module
+package com.ic.flckr.common.di.module
 
 import android.app.Application
 import android.content.Context

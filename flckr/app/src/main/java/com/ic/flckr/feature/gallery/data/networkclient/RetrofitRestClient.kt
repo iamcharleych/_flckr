@@ -1,9 +1,9 @@
 package com.ic.flckr.feature.gallery.data.networkclient
 
-import com.ic.flckr.network.core.DataRequest
-import com.ic.flckr.network.core.DataResponse
-import com.ic.flckr.network.core.RestClient
-import com.ic.flckr.network.core.requireArgument
+import com.ic.flckr.common.data.network.core.DataRequest
+import com.ic.flckr.common.data.network.core.DataResponse
+import com.ic.flckr.common.data.network.core.RestClient
+import com.ic.flckr.common.data.network.core.requireArgument
 import com.ic.flckr.feature.gallery.data.entity.FlckrPhotoCollection
 import com.ic.logger.Logger
 import retrofit2.Retrofit

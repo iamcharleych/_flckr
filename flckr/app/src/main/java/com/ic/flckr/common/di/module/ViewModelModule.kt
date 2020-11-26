@@ -1,4 +1,4 @@
-package com.ic.flckr.di.module
+package com.ic.flckr.common.di.module
 
 import androidx.lifecycle.ViewModelProvider
 import com.ic.flckr.common.ui.ViewModelFactory

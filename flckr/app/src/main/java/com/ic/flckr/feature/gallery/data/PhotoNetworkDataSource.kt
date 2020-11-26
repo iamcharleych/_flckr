@@ -1,12 +1,13 @@
 package com.ic.flckr.feature.gallery.data
 
-import com.ic.flckr.feature.gallery.data.networkclient.Requests
-import com.ic.flckr.feature.gallery.data.networkclient.RetrofitRestClient
+import com.ic.flckr.common.data.network.core.DataResponse
+import com.ic.flckr.common.data.network.core.RestClient
 import com.ic.flckr.feature.gallery.data.entity.FlckrPhotoCollection
+import com.ic.flckr.feature.gallery.data.networkclient.Requests
 import javax.inject.Inject
 
 class PhotoNetworkDataSource @Inject constructor(
-    private val retrofitRestClient: RetrofitRestClient
+    private val restClient: RestClient<DataResponse<*>>
 ) {
 
     suspend fun getPhotos(searchQuery: String?, page: Int): FlckrPhotoCollection {
@@ -16,6 +17,6 @@ class PhotoNetworkDataSource @Inject constructor(
             Requests.getRecentPhotos()
         }
 
-        return retrofitRestClient.execute(request).responseObject as FlckrPhotoCollection
+        return restClient.execute(request).responseObject as FlckrPhotoCollection
     }
 }

@@ -1,4 +1,4 @@
-package com.ic.flckr.di.scope
+package com.ic.flckr.common.di.scope
 
 import javax.inject.Scope
 

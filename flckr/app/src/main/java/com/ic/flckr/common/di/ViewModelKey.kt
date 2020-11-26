@@ -1,4 +1,4 @@
-package com.ic.flckr.di
+package com.ic.flckr.common.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
