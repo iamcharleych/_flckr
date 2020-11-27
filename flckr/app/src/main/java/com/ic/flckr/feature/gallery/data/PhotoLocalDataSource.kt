@@ -28,4 +28,8 @@ class PhotoLocalDataSource @Inject constructor(
 //            }
         }
     }
+
+    suspend fun loadPhotos(): List<FlckrPhotoEntity> {
+        return database.getPhotosDao().loadPhotos()
+    }
 }

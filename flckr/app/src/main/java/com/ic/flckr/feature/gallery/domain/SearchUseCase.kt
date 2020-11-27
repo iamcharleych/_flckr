@@ -9,9 +9,8 @@ class SearchUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         searchQuery: String?,
-        pageIndex: Int,
-        appendResults: Boolean
+        pageIndex: Int
     ): Result<List<Photo>> {
-        return repository.search(searchQuery, pageIndex, appendResults)
+        return repository.search(searchQuery, pageIndex, pageIndex > 0)
     }
 }

@@ -2,6 +2,7 @@ package com.ic.flckr.feature.gallery.di
 
 import com.ic.flckr.common.data.network.core.DataResponse
 import com.ic.flckr.common.data.network.core.RestClient
+import com.ic.flckr.common.di.scope.FragmentScope
 import com.ic.flckr.feature.gallery.data.PhotoRepositoryImpl
 import com.ic.flckr.feature.gallery.data.networkclient.RetrofitRestClient
 import com.ic.flckr.feature.gallery.domain.PhotoRepository
@@ -9,7 +10,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
 abstract class GalleryModule {
@@ -22,7 +22,7 @@ abstract class GalleryModule {
 
     companion object {
         @Provides
-        @Singleton
+        @FragmentScope
         fun provideRetrofitRestClient(retrofit: Retrofit): RetrofitRestClient {
             return RetrofitRestClient(retrofit)
         }

@@ -9,6 +9,6 @@ interface FlckrPhotoDao : BaseEntityDao<FlckrPhotoEntity> {
     @Query("DELETE FROM photos")
     suspend fun deleteAll()
 
-//    @Query("SELECT * FROM photos")
-//    suspend fun loadPhotos(): DataSource.Factory<Int, FlckrPhotoEntity>
+    @Query("SELECT * FROM photos")
+    suspend fun loadPhotos(): List<FlckrPhotoEntity>
 }

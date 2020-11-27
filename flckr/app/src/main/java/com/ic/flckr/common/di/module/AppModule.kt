@@ -9,8 +9,10 @@ import dagger.android.ContributesAndroidInjector
 @Module(
     includes = [
         AndroidModule::class,
+        DatabaseModule::class,
         NetworkModule::class,
         ViewModelModule::class,
+        UtilsModule::class
     ]
 )
 abstract class AppModule {

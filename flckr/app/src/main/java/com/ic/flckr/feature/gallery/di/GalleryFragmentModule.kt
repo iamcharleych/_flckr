@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Module
+@Module(includes = [GalleryModule::class])
 abstract class GalleryFragmentModule {
 
     @Binds

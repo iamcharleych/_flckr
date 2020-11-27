@@ -7,7 +7,7 @@ import com.ic.flckr.feature.gallery.ui.GalleryFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-@Module(includes = [GalleryModule::class])
+@Module
 abstract class MainActivityModule {
 
     @FragmentScope
