@@ -21,6 +21,7 @@ class PhotoRepositoryImpl @Inject constructor(
     ): Result<List<Photo>> {
         return try {
             if (!reachability.isConnected() && searchQuery.isNullOrEmpty()) {
+                L.debug { "search(): offline loading" }
                 // case of cached 'Recent photos': no internet and empty search term
                 val photos = photoLocalDataSource.loadPhotos()
 
@@ -32,6 +33,7 @@ class PhotoRepositoryImpl @Inject constructor(
             val photos = entityCollection.photo ?: emptyList()
 
             try {
+                L.debug { "search(): photos fetched, size=${photos.size}" }
                 // no need to cache search results. Manage only the 'Recent photos' case
                 if (searchQuery.isNullOrEmpty()) {
                     photoLocalDataSource.savePhotos(searchQuery, photos, !appendResults)

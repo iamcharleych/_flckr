@@ -7,14 +7,14 @@ import retrofit2.http.Query
 interface API {
 
     @GET("?method=flickr.photos.search&format=json&nojsoncallback=1")
-    fun searchPhotos(
+    suspend fun searchPhotos(
         @Query("api_key") apiKey: String,
         @Query("text") searchQuery: String,
         @Query("page") page: Int
     ): FlckrPhotosResponse
 
     @GET("?method=flickr.photos.getRecent&format=json&nojsoncallback=1")
-    fun getRecentPhotos(
+    suspend fun getRecentPhotos(
         @Query("api_key") apiKey: String
     ): FlckrPhotosResponse
 }

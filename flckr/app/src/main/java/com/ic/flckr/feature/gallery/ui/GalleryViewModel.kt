@@ -8,7 +8,7 @@ import com.ic.flckr.feature.gallery.ui.GalleryView.*
 import com.ic.flckr.feature.gallery.ui.GalleryView.Event.SearchTriggered
 import com.ic.flckr.feature.gallery.ui.model.LoadingState
 import com.ic.flckr.feature.gallery.ui.model.ModelMapper
-import com.ic.flckr.feature.gallery.ui.model.PhotoModelItem
+import com.ic.flckr.feature.gallery.ui.model.PhotoItemModel
 import com.ic.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -35,8 +35,8 @@ class GalleryViewModel @Inject constructor(
     private val _loadingState = MutableLiveData<LoadingState>(LoadingState.Idle)
     val loadingState: LiveData<LoadingState> = _loadingState
 
-    private val _photoItems = MutableLiveData<List<PhotoModelItem>>()
-    val photoItems: LiveData<List<PhotoModelItem>> = _photoItems
+    private val _photoItems = MutableLiveData<List<PhotoItemModel>>()
+    val photoItems: LiveData<List<PhotoItemModel>> = _photoItems
 
     init {
         handleSearchTriggered(null)
@@ -65,6 +65,7 @@ class GalleryViewModel @Inject constructor(
     }
 
     private suspend fun handleSearchResult(result: Result<List<Photo>>) {
+        L.debug { "handleSearchResult(): result=$result" }
         when (result) {
             is Result.Success -> {
                 _loadingState.value = LoadingState.Completed

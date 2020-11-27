@@ -1,5 +1,6 @@
 package com.ic.flckr.feature.gallery.data.networkclient
 
+import com.ic.flckr.BuildConfig
 import com.ic.flckr.common.data.network.core.DataRequest
 
 object Requests {
@@ -16,11 +17,13 @@ object Requests {
         return DataRequest(OP_GET_SEARCH)
             .with(PARAM_SEARCH_TEXT, searchQuery)
             .with(PARAM_PAGE, page.toString())
+            .with(PARAM_API_KEY, BuildConfig.API_KEY)
     }
 
     const val OP_GET_RECENT = "op_get_recent"
 
     fun getRecentPhotos(): DataRequest {
         return DataRequest(OP_GET_RECENT)
+            .with(PARAM_API_KEY, BuildConfig.API_KEY)
     }
 }

@@ -3,6 +3,7 @@ package com.ic.flckr
 import android.app.Application
 import android.os.Build
 import com.ic.flckr.common.di.DaggerAppComponent
+import com.ic.flckr.utils.Reachability
 import com.ic.logger.Logger
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -19,6 +20,7 @@ class FlckrApp : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
 
+        Reachability.init(this)
         setupLogger()
         setupDagger()
     }

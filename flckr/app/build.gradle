@@ -45,6 +45,9 @@ android {
                 "-Xinline-classes"
         ]
     }
+    kapt {
+        correctErrorTypes true
+    }
 }
 
 dependencies {
@@ -86,6 +89,7 @@ dependencies {
     implementation Deps.okhttpLoggingInterceptor
 
     implementation Deps.glide
+    kapt Deps.glideCompiler
 
     testImplementation Deps.testJUnit
 

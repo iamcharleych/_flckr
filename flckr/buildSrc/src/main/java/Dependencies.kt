@@ -37,6 +37,7 @@ object Deps {
     const val daggerCompiler            = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val daggerRuntime             = "com.google.dagger:dagger:${Versions.dagger}"
     const val glide                     = "com.github.bumptech.glide:glide:${Versions.glide}"
+    const val glideCompiler             = "com.github.bumptech.glide:compiler:${Versions.glide}"
     const val kotlinCoroutines          = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
     const val kotlinCoroutinesAndroid   = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
     const val kotlinPlugin              = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
