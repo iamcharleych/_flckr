@@ -16,7 +16,7 @@ object Requests {
     fun search(searchQuery: String, page: Int): DataRequest {
         return DataRequest(OP_GET_SEARCH)
             .with(PARAM_SEARCH_TEXT, searchQuery)
-            .with(PARAM_PAGE, page.toString())
+            .with(PARAM_PAGE, page)
             .with(PARAM_API_KEY, BuildConfig.API_KEY)
     }
 
