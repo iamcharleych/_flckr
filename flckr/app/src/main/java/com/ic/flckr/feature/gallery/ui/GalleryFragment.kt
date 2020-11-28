@@ -45,8 +45,11 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
             smallThumbRequest
         ).also {
             it.events.observe(viewLifecycleOwner, viewModel.galleryObserver)
-            viewModel.loadingState.observe(viewLifecycleOwner, it::updateLoadingState)
-            viewModel.photoItems.observe(viewLifecycleOwner, it::setItems)
+            viewModel.run {
+                loadingState.observe(viewLifecycleOwner, it::updateLoadingState)
+                photoItems.observe(viewLifecycleOwner, it::setItems)
+                suggestionsCursorData.observe(viewLifecycleOwner, it::updateSuggestions)
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.ic.flckr.feature.gallery.ui
 
+import android.database.Cursor
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.MenuItem
@@ -99,6 +100,10 @@ class GalleryView(
 
     fun setItems(items: List<PhotoItemModel>) {
         adapter.submitList(items)
+    }
+
+    fun updateSuggestions(cursor: Cursor) {
+        suggestionsAdapter.changeCursor(cursor)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

@@ -1,11 +1,15 @@
 package com.ic.flckr.feature.gallery.ui
 
+import android.database.Cursor
+import android.database.MatrixCursor
+import android.provider.BaseColumns
 import androidx.lifecycle.*
 import com.ic.flckr.common.domain.Result
+import com.ic.flckr.feature.gallery.domain.LoadSuggestionsUseCase
 import com.ic.flckr.feature.gallery.domain.SearchUseCase
 import com.ic.flckr.feature.gallery.domain.model.Photo
 import com.ic.flckr.feature.gallery.ui.GalleryView.*
-import com.ic.flckr.feature.gallery.ui.GalleryView.Event.SearchTriggered
+import com.ic.flckr.feature.gallery.ui.GalleryView.Event.*
 import com.ic.flckr.feature.gallery.ui.model.LoadingState
 import com.ic.flckr.feature.gallery.ui.model.ModelMapper
 import com.ic.flckr.feature.gallery.ui.model.PhotoItemModel
@@ -18,6 +22,7 @@ import javax.inject.Inject
 
 class GalleryViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
+    private val loadSuggestionsUseCase: LoadSuggestionsUseCase,
     private val modelMapper: ModelMapper
 ): ViewModel() {
 
@@ -28,7 +33,8 @@ class GalleryViewModel @Inject constructor(
         L.debug { "galleryObserver: $it" }
         when (it) {
             is SearchTriggered -> handleSearchTriggered(it.searchQuery)
-            is Event.LoadMoreRequested -> handleLoadMore()
+            is LoadMoreRequested -> handleLoadMore()
+            is SuggestionsRequested -> handleSuggestionsRequest(it.searchQuery)
         }
     }
 
@@ -37,6 +43,9 @@ class GalleryViewModel @Inject constructor(
 
     private val _photoItems = MutableLiveData<List<PhotoItemModel>>()
     val photoItems: LiveData<List<PhotoItemModel>> = _photoItems
+
+    private val _suggestionsCursorData = MutableLiveData<Cursor>()
+    val suggestionsCursorData: LiveData<Cursor> = _suggestionsCursorData
 
     init {
         handleSearchTriggered(null)
@@ -61,6 +70,25 @@ class GalleryViewModel @Inject constructor(
                 searchUseCase(searchQuery, ++page)
             }
             handleSearchResult(result)
+        }
+    }
+
+    private fun handleSuggestionsRequest(searchQuery: String?) {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                loadSuggestionsUseCase(searchQuery)
+            }
+            L.debug { "handleSuggestionsRequest(): result = $result" }
+            when (result) {
+                is Result.Success -> {
+                    if (result.data.isNotEmpty()) {
+                        val cursor = MatrixCursor(arrayOf(BaseColumns._ID, "suggestion"))
+                        result.data.forEachIndexed { index, s -> cursor.addRow(arrayOf(index, s)) }
+                        _suggestionsCursorData.value = cursor
+                    }
+                }
+                is Result.Fail -> {}
+            }
         }
     }
 
