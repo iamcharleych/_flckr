@@ -22,7 +22,7 @@ class RetrofitRestClient(retrofit: Retrofit) : RestClient<DataResponse<*>>() {
                 response = api.searchPhotos(
                     request.requireArgument(PARAM_API_KEY),
                     request.requireArgument(PARAM_SEARCH_TEXT),
-                    request.requireArgument<Int>(PARAM_PAGE),
+                    request.requireArgument(PARAM_PAGE),
                 ).let { retrofitResponse ->
                     DataResponse<FlckrPhotoCollection>().apply {
                         responseObject = retrofitResponse.photos
