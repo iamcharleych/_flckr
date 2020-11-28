@@ -33,7 +33,7 @@ class GalleryView(
     val events: LiveData<Event> = _events
 
     private val adapter = GalleryAdapter(largeThumbRequest, smallThumbRequest).apply {
-        galleryItemClickListener = { photoItemModel -> TODO() }
+        galleryItemClickListener = { _events.value = Event.ItemClicked(it) }
     }
 
     private val suggestionsAdapter = SimpleCursorAdapter(
@@ -155,5 +155,6 @@ class GalleryView(
         data class SearchTriggered(val searchQuery: String?) : Event()
         object LoadMoreRequested : Event()
         data class SuggestionsRequested(val searchQuery: String?) : Event()
+        data class ItemClicked(val item: PhotoItemModel) : Event()
     }
 }

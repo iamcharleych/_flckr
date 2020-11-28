@@ -32,6 +32,7 @@ class GalleryViewModel @Inject constructor(
             is SearchTriggered -> handleSearchTriggered(it.searchQuery)
             is LoadMoreRequested -> handleLoadMore()
             is SuggestionsRequested -> handleSuggestionsRequest(it.searchQuery)
+            is ItemClicked -> _navigationEvents.value = NavigationEvent.OpenImage(it.item.photoUrl)
         }
     }
 
@@ -43,6 +44,9 @@ class GalleryViewModel @Inject constructor(
 
     private val _suggestionsCursorData = MutableLiveData<Cursor>()
     val suggestionsCursorData: LiveData<Cursor> = _suggestionsCursorData
+
+    private val _navigationEvents = MutableLiveData<NavigationEvent>()
+    val navigationEvents: LiveData<NavigationEvent> = _navigationEvents
 
     private var getSuggestionsJob: Job? = null
 
