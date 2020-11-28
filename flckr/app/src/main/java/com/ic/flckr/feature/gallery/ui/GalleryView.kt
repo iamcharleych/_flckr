@@ -84,6 +84,7 @@ class GalleryView(
             toolbar.run {
                 inflateMenu(R.menu.menu_photo_list)
 
+                setTitle(R.string.app_name)
                 menuItem = menu.findItem(R.id.action_search)
                 val searchView = menuItem?.actionView as? SearchView
                 searchView?.let { setupSearchView(it) }
