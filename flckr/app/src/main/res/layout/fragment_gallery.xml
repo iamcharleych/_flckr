@@ -27,4 +27,31 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:listitem="@layout/item_gallery_photo" />
 
+    <View
+        android:id="@+id/progressBarBackground"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/bg_progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="@id/progressBarBackground"
+        app:layout_constraintLeft_toLeftOf="@id/progressBarBackground"
+        app:layout_constraintRight_toRightOf="@id/progressBarBackground"
+        app:layout_constraintTop_toTopOf="@id/progressBarBackground" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/progressBarGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="progressBar, progressBarBackground"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

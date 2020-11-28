@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.lifecycle.LiveData
@@ -18,11 +19,12 @@ import com.ic.flckr.common.di.glide.GlideRequest
 import com.ic.flckr.databinding.FragmentGalleryBinding
 import com.ic.flckr.feature.gallery.ui.model.LoadingState
 import com.ic.flckr.feature.gallery.ui.model.PhotoItemModel
+import com.ic.flckr.widget.toast.FlckrToast
 
 class GalleryView(
     private val binding: FragmentGalleryBinding,
-    private val largeThumbRequest: GlideRequest<Drawable>,
-    private val smallThumbRequest: GlideRequest<Drawable>
+    largeThumbRequest: GlideRequest<Drawable>,
+    smallThumbRequest: GlideRequest<Drawable>
 ) : SearchView.OnQueryTextListener {
 
     private val _events = MutableLiveData<Event>()
@@ -95,7 +97,13 @@ class GalleryView(
     }
 
     fun updateLoadingState(state: LoadingState) {
-
+        binding.run {
+            progressBarGroup.isVisible = state == LoadingState.Loading
+        }
+        when (state) {
+            LoadingState.Completed -> FlckrToast.DONE.show(binding.root.context, "Done")
+            is LoadingState.Failed -> FlckrToast.FAIL.show(binding.root.context, state.message)
+        }
     }
 
     fun setItems(items: List<PhotoItemModel>) {

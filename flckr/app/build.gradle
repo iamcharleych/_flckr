@@ -66,8 +66,9 @@ dependencies {
     implementation Deps.xLifecycleProcess
     implementation Deps.xLifecycleCommonJava8
 
-    implementation Deps.xMaterial
     implementation Deps.xFragment
+    implementation Deps.xMaterial
+    implementation Deps.xSwipeRefreshLayout
 
     implementation Deps.daggerRuntime
     implementation Deps.daggerAndroid

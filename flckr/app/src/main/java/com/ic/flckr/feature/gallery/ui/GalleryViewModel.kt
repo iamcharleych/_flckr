@@ -14,10 +14,7 @@ import com.ic.flckr.feature.gallery.ui.model.LoadingState
 import com.ic.flckr.feature.gallery.ui.model.ModelMapper
 import com.ic.flckr.feature.gallery.ui.model.PhotoItemModel
 import com.ic.logger.Logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GalleryViewModel @Inject constructor(
@@ -47,6 +44,8 @@ class GalleryViewModel @Inject constructor(
     private val _suggestionsCursorData = MutableLiveData<Cursor>()
     val suggestionsCursorData: LiveData<Cursor> = _suggestionsCursorData
 
+    private var getSuggestionsJob: Job? = null
+
     init {
         handleSearchTriggered(null)
     }
@@ -74,7 +73,8 @@ class GalleryViewModel @Inject constructor(
     }
 
     private fun handleSuggestionsRequest(searchQuery: String?) {
-        viewModelScope.launch {
+        getSuggestionsJob?.cancel()
+        getSuggestionsJob = viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 loadSuggestionsUseCase(searchQuery)
             }
@@ -89,6 +89,8 @@ class GalleryViewModel @Inject constructor(
                 }
                 is Result.Fail -> {}
             }
+        }.also {
+            it.invokeOnCompletion { getSuggestionsJob = null }
         }
     }
 
@@ -100,7 +102,7 @@ class GalleryViewModel @Inject constructor(
                 _photoItems.value = result.data.map { modelMapper.mapItem(it) }
             }
             is Result.Fail -> {
-                _loadingState.value = LoadingState.Failed
+                _loadingState.value = LoadingState.Failed(result.message)
             }
         }
 

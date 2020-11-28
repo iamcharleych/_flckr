@@ -25,6 +25,7 @@ object Versions {
     const val xLifecycle = "2.2.0"
     const val xMaterial = "1.2.1"
     const val xRecyclerView = "1.1.0"
+    const val xSwipeRefreshLayout = "1.1.0"
     const val xWorker = "2.4.0"
 }
 
@@ -65,5 +66,6 @@ object Deps {
     const val xLifecycleViewModel       = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.xLifecycle}"
     const val xMaterial                 = "com.google.android.material:material:${Versions.xMaterial}"
     const val xRecyclerView             = "androidx.recyclerview:recyclerview:${Versions.xRecyclerView}"
+    const val xSwipeRefreshLayout       = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.xSwipeRefreshLayout}"
     const val xWorker                   = "androidx.work:work-runtime-ktx:${Versions.xWorker}"
 }
