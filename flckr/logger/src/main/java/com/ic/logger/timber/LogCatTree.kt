@@ -1,9 +1,8 @@
-package com.vochi.logger.timber
+package com.ic.logger.timber
 
 import android.annotation.SuppressLint
 import android.util.Log
 import timber.log.Timber
-import kotlin.math.min
 
 /**
  * Simple [Timber.Tree] that prints to log cat and uses manually set tag only,

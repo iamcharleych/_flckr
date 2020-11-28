@@ -1,4 +1,4 @@
-package com.vochi.logger.timber
+package com.ic.logger.timber
 
 import android.annotation.SuppressLint
 import android.util.Log

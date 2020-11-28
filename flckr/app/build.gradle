@@ -17,6 +17,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_BASE_URL", API_BASE_URL)
+        buildConfigField("String", "API_KEY", API_KEY)
     }
 
     buildTypes {
@@ -42,9 +45,14 @@ android {
                 "-Xinline-classes"
         ]
     }
+    kapt {
+        correctErrorTypes true
+    }
 }
 
 dependencies {
+    implementation project(':logger')
+
     implementation Deps.kotlinStdlib
     implementation Deps.kotlinCoroutines
     implementation Deps.kotlinCoroutinesAndroid
@@ -58,8 +66,9 @@ dependencies {
     implementation Deps.xLifecycleProcess
     implementation Deps.xLifecycleCommonJava8
 
-    implementation Deps.xMaterial
     implementation Deps.xFragment
+    implementation Deps.xMaterial
+    implementation Deps.xSwipeRefreshLayout
 
     implementation Deps.daggerRuntime
     implementation Deps.daggerAndroid
@@ -70,12 +79,18 @@ dependencies {
     implementation Deps.daggerAssist
     kapt Deps.daggerAssistProcessor
 
+    implementation Deps.paging
+    implementation Deps.room
+    implementation Deps.roomKtx
+    kapt Deps.roomCompiler
+
     // square up
     implementation Deps.retrofit
     implementation Deps.retrofitGson
     implementation Deps.okhttpLoggingInterceptor
 
     implementation Deps.glide
+    kapt Deps.glideCompiler
 
     testImplementation Deps.testJUnit
 

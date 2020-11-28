@@ -1,0 +1,2 @@
+ext.API_BASE_URL = '\"https://api.flickr.com/services/rest/\"'
+ext.API_KEY = '\"4aadf066d57b1d295153c604b896eb83\"'
