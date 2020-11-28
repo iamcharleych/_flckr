@@ -63,6 +63,10 @@ class GalleryViewModel @Inject constructor(
     }
 
     private fun handleLoadMore() {
+        if (_loadingState.value == LoadingState.Loading) {
+            return // early exit
+        }
+
         viewModelScope.launch {
             _loadingState.value = LoadingState.Loading
             val result = withContext(Dispatchers.IO) {

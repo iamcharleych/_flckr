@@ -19,7 +19,9 @@ import com.ic.flckr.common.di.glide.GlideRequest
 import com.ic.flckr.databinding.FragmentGalleryBinding
 import com.ic.flckr.feature.gallery.ui.model.LoadingState
 import com.ic.flckr.feature.gallery.ui.model.PhotoItemModel
+import com.ic.flckr.utils.extension.throttleOnScrolled
 import com.ic.flckr.widget.toast.FlckrToast
+import com.ic.logger.Logger
 
 class GalleryView(
     private val binding: FragmentGalleryBinding,
@@ -45,6 +47,21 @@ class GalleryView(
 
     private var menuItem: MenuItem? = null
 
+    // primitive 'load more' handler
+    private val gridScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy < 0) {
+                return // early exit, upwards scrolling
+            }
+            (recyclerView.layoutManager as? GridLayoutManager)?.let {
+                val lastVisiblePosition = it.findLastVisibleItemPosition()
+                if (adapter.itemCount - lastVisiblePosition < LOAD_MORE_ITEM_OFFSET) {
+                    _events.value = Event.LoadMoreRequested
+                }
+            }
+        }
+    }.throttleOnScrolled(LOAD_MORE_THRESHOLD)
+
     init {
         binding.run {
             gridView.run {
@@ -62,6 +79,7 @@ class GalleryView(
                     }
                 })
                 adapter = this@GalleryView.adapter
+                addOnScrollListener(gridScrollListener)
             }
             toolbar.run {
                 inflateMenu(R.menu.menu_photo_list)
@@ -123,6 +141,13 @@ class GalleryView(
     override fun onQueryTextChange(newText: String?): Boolean {
         _events.value = Event.SuggestionsRequested(newText)
         return true
+    }
+
+    companion object {
+        private val L = Logger()
+
+        private const val LOAD_MORE_ITEM_OFFSET = 10
+        private const val LOAD_MORE_THRESHOLD = 500L
     }
 
     sealed class Event {
