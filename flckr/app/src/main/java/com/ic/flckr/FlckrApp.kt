@@ -30,10 +30,6 @@ class FlckrApp : Application(), HasAndroidInjector {
             Logger.init(this, Logger.Config(
                 exceptionHandlerEnabled = true,
                 logCatEnabled = true,
-                fileLoggerConfig = Logger.FileLoggerConfig(
-                    fileLogsEnabled = true,
-                    fileLogsDirectory = getExternalFilesDir("logs")
-                ),
                 showThreadName = true,
                 logActivityLifecycle = true,
                 logFragmentLifecycle = true,

@@ -13,12 +13,15 @@ import com.ic.flckr.common.di.glide.GlideRequest
 import com.ic.flckr.common.ui.viewBinding
 import com.ic.flckr.databinding.FragmentGalleryBinding
 import com.ic.flckr.feature.fullscreenimage.FullscreenImageFragment
+import com.ic.flckr.utils.Reachability
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Named
 
 class GalleryFragment : Fragment(R.layout.fragment_gallery) {
 
+    @Inject
+    lateinit var reachability: Reachability
     @Inject
     @Named("largeThumbRequest")
     lateinit var largeThumbRequest: GlideRequest<Drawable>
@@ -59,6 +62,8 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
                 )
             }
         }
+
+        reachability.connectivityEventChannel.observe(viewLifecycleOwner, viewModel.reachabilityObserver)
     }
 
     private fun openFragment(fragment: Fragment, tag: String) {

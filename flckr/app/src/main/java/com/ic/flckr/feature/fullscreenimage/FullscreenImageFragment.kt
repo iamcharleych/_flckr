@@ -18,6 +18,7 @@ class FullscreenImageFragment : Fragment(R.layout.fragment_fullscreen_image) {
         if (!url.isNullOrEmpty()) {
             GlideApp.with(binding.root.context)
                 .load(url)
+                .placeholder(R.drawable.placeholder)
                 .fitCenter()
                 .into(binding.fullscreenImage)
         }

@@ -47,20 +47,6 @@ object Reachability : ConnectivityManager.NetworkCallback() {
         return false
     }
 
-    fun isWiFiConnection(): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            cm.activeNetwork?.let { net ->
-                val caps = cm.getNetworkCapabilities(net) ?: return false
-                return caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-            }
-        } else {
-            return cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)?.isConnected ?: false
-        }
-
-        return false
-    }
-
     override fun onAvailable(network: Network) {
         connectivityLiveData.postValue(true)
     }

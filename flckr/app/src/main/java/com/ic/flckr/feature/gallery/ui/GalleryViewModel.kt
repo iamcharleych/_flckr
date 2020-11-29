@@ -36,6 +36,14 @@ class GalleryViewModel @Inject constructor(
         }
     }
 
+    val reachabilityObserver = Observer<Boolean> {
+        if (it) {
+            if (_photoItems.value.isNullOrEmpty()) {
+                handleSearchTriggered(searchQuery)
+            }
+        }
+    }
+
     private val _loadingState = MutableLiveData<LoadingState>(LoadingState.Idle)
     val loadingState: LiveData<LoadingState> = _loadingState
 
